@@ -8,7 +8,6 @@ import (
 	"net"
 	"os"
 	"os/user"
-	"path"
 	"strconv"
 	"strings"
 	"syscall"
@@ -56,11 +55,8 @@ func genSSHConfig(node *Node) *defaultClient {
 	var authMethods []ssh.AuthMethod
 
 	var pemBytes []byte
-	if node.KeyPath == "" {
-		pemBytes, err = ioutil.ReadFile(path.Join(u.HomeDir, ".ssh/id_rsa"))
-	} else {
+	if node.KeyPath != "" {
 		pemBytes, err = ioutil.ReadFile(node.KeyPath)
-	}
 	if err != nil {
 		l.Error(err)
 	} else {
@@ -76,6 +72,7 @@ func genSSHConfig(node *Node) *defaultClient {
 			authMethods = append(authMethods, ssh.PublicKeys(signer))
 		}
 	}
+        }
 
 	password := node.password()
 
