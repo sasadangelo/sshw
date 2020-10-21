@@ -46,7 +46,7 @@ type defaultClient struct {
 }
 
 func genSSHConfig(node *Node) *defaultClient {
-	u, err := user.Current()
+	_, err := user.Current()
 	if err != nil {
 		l.Error(err)
 		return nil
